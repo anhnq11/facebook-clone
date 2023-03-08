@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     container:{
-        width: '100%',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#ccc',
         paddingHorizontal: 10,
         marginTop: 10,
+        marginHorizontal: 10,
         padding: 3,
+        borderRadius: 10
     },
     userInfo:{
         width: '100%',
@@ -14,17 +15,19 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     userImgBox:{
-        width: 40,
-        height: 40,
+        width: 45,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
     },
     userImg:{
-        fontSize: 40,
+        width: '100%',
+        height: '100%',
+        borderRadius: 45,
     },
     userNameBox:{
-        width: '55%',
+        width: '50%',
         marginLeft: 5,
     },
     userName:{
@@ -40,16 +43,15 @@ export default StyleSheet.create({
         marginRight: 10,
         fontSize: 15,
         color: 'black',
-
     },
     followBtn:{
-        width: '26%',
+        width: 100,
         height: 30,
         backgroundColor: '#30CF59',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 8,
         paddingHorizontal: 5
     },
     followText:{
@@ -64,4 +66,8 @@ export default StyleSheet.create({
         fontSize: 25,
         color: 'white'
     },
+    deleteIcon:{
+        fontSize: 25,
+        marginLeft: 70
+    }
 })

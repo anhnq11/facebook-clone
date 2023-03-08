@@ -1,24 +1,30 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import HomeScr from './homeScr/HomeScr';
-import FriendScr from './friendScr/FriendScr';
+
+import HomeNav from './homeScr/HomeNav';
+import FriendNav from './friendScr/FriendNav';
 import MediaScr from './media/MediaScr';
-import Profile from './profileScr/Profile';
+import Profile from './profileScr/ProfileScr';
 
 import Feather from 'react-native-vector-icons/Feather'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Fontisto from 'react-native-vector-icons/Fontisto'
+import NotifyScr from './notifyScr/NotifyScr';
 
 const Tab = createBottomTabNavigator();
+
 const activeColor = '#30CF59';
 
 const TabNav = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScr}
+      <Tab.Screen name="Home" component={HomeNav}
         options={{
+          headerShown: false,
           tabBarLabelStyle: {
             fontSize: 0,
+            color: 'white'
           },
           tabBarActiveTintColor: activeColor,
           tabBarIcon: () => {
@@ -27,8 +33,9 @@ const TabNav = () => {
           tabBarActiveBackgroundColor: activeColor
         }} />
 
-      <Tab.Screen name="Friend" component={FriendScr}
+      <Tab.Screen name="Friend" component={FriendNav}
         options={{
+          headerShown: false,
           tabBarLabelStyle: {
             fontSize: 0,
           },
@@ -39,8 +46,22 @@ const TabNav = () => {
           tabBarActiveBackgroundColor: activeColor
         }} />
 
-      <Tab.Screen name="Music" component={MediaScr}
+      <Tab.Screen name="Notify" component={NotifyScr}
         options={{
+          title: 'My Notifications',
+          tabBarLabelStyle: {
+            fontSize: 0,
+          },
+          tabBarActiveTintColor: activeColor,
+          tabBarIcon: () => {
+            return (<Fontisto name='bell' style={{ fontSize: 24, }}/>)
+          },
+          tabBarActiveBackgroundColor: activeColor
+        }} />
+
+      {/* <Tab.Screen name="Music" component={MediaScr}
+        options={{
+          title: 'My Music',
           tabBarLabelStyle: {
             fontSize: 0,
           },
@@ -49,10 +70,11 @@ const TabNav = () => {
             return (<Feather name='music' style={{ fontSize: 24, }}/>)
           },
           tabBarActiveBackgroundColor: activeColor
-        }} />
+        }} /> */}
 
         <Tab.Screen name="Profile" component={Profile}
         options={{
+          title: 'My Profile',
           tabBarLabelStyle: {
             fontSize: 0,
           },
