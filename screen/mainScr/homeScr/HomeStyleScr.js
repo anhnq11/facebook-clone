@@ -85,5 +85,6 @@ export default StyleSheet.create({
         fontSize: 22,
         fontWeight: '500',
         paddingVertical: 3,
-    }
+    },
+    
 })

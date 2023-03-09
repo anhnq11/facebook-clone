@@ -131,12 +131,12 @@ const HomeScr = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={{backgroundColor: '#ccc'}}>
       <FlatList
         keyExtractor={(item) => { return item.id }}
         data={post}
         key={(item) => { return item.id }}
-        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo} onPress={() => { loadData() }}/>}
+        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo}/>}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={loadData} />
         }

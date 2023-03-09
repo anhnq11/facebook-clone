@@ -18,17 +18,17 @@ export default StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
         position: 'absolute',
-        marginTop: '42%',
+        marginTop: '37%',
         flexDirection: 'row',
     },
     userImgBox:{
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
     },
     userImg:{
         width: '100%',
         height: '100%',
-        borderRadius: 100,
+        borderRadius: 120,
     },
     userName:{
         fontSize: 30,
@@ -38,20 +38,20 @@ export default StyleSheet.create({
     },
     flInfo:{
         marginTop: 45,
-        marginLeft: 20,
+        marginLeft: 30,
         flexDirection: 'row',
     },
     postText:{
         fontSize: 18,
         fontWeight: '500',
         color: '#61605f',
-        paddingRight: 20,
+        paddingRight: 10,
     },
     flText:{
         fontSize: 18,
         fontWeight: '500',
         color: '#61605f',
-        paddingLeft: 20,
+        paddingLeft: 10,
         borderLeftWidth: 2,
         borderColor: '#61605f'
     },
@@ -61,9 +61,7 @@ export default StyleSheet.create({
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomWidth: 2,
         paddingBottom: 10,
-        borderBottomColor: '#61605f'
     },
     btnBoxL:{
         width: '40%',
@@ -102,8 +100,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: '5%',
         marginTop: '30%',
-        borderWidth: 4,
-        borderColor: '#30CF59'
     },
     inputBox:{
         width: 300,
@@ -112,7 +108,6 @@ export default StyleSheet.create({
         borderColor: '#30CF59',
         backgroundColor: 'white',
         padding: 10,
-        marginTop: 10,
     },
     inputText:{
         color: 'black',
@@ -137,7 +132,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 10,
-
     },
     modalBtn:{
         width: '45%',
@@ -145,12 +139,43 @@ export default StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     modalBtnText:{
         color: 'white',
         fontSize: 22,
         fontWeight: '500',
         paddingVertical: 3,
-    }
+    },
+    newPost:{
+        borderTopWidth: 10,
+        borderTopColor: '#ccc',
+        padding: 10,
+        flexDirection: 'row'
+    },
+    userImgBox2:{
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+        marginLeft: 0,
+    },
+    userImg2:{
+        width: '100%',
+        height: '100%',
+        borderRadius: 40
+    },
+    inputBox2:{
+        width: 300,
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#ccc',
+        backgroundColor: 'white',
+        padding: 8,
+    },
+    inputText2:{
+        color: 'black',
+        fontWeight: '600',
+        fontSize: 18,
+    },
 })

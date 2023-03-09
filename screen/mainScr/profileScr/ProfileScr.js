@@ -17,7 +17,8 @@ import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import NewsItemInPr from './news/NewsItemInPr'
+import Entypo from 'react-native-vector-icons/Entypo'
+import NewItems from '../homeScr/newsItems/NewItems';
 import URL from '../../../UrlAPi';
 
 const introImg = 'https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/rGTEEA2fm66YMzeJz2UbwkKOW62bZVlqKOKZrXlMN7g.jpeg'
@@ -50,7 +51,7 @@ const Profile = ({ navigation }) => {
 
   // Fetch data hiển thị danh sách bài viết của người dùng lên màn hình
   const getPost = async (value) => {
-    let url = URL + '/posts?profileId=' + value.id + '&_sort=id&_order=desc'
+    let url = URL + '/posts?profileId=' + value.id + '&_sort=id&_order=desc&_expand=profile'
     setimg(value.img)
     setname(value.fullname)
     setuserInfo(value)
@@ -206,11 +207,13 @@ const Profile = ({ navigation }) => {
           <Text style={Style.flText}>{flCount} Follower</Text>
         </View>
         <View style={Style.btnContainer}>
+          {/* Button chỉnh sửa thông tin tài khoản */}
           <TouchableOpacity style={Style.btnBoxL} onPress={() => { setisModalShow(true) }}>
             <FontAwesome style={Style.btnIcon} name='edit' />
             <Text style={Style.btnText}>Edit</Text>
           </TouchableOpacity>
 
+          {/* Button đăng xuất tài khoản */}
           <TouchableOpacity style={Style.btnBoxR} onPress={() => {
             Alert.alert("Xác nhận", "Đăng xuất tài khoản!", [
               {
@@ -267,13 +270,30 @@ const Profile = ({ navigation }) => {
         </Modal>
       </View>
 
+      {/* Upload bài viết mới */}
+      <View style={Style.newPost}>
+        <View style={Style.userImgBox2}><Image style={Style.userImg2} source={{ uri: userInfo.img }} /></View>
+        <View style={Style.inputBox2}>
+          <TextInput
+            style={Style.inputText2}
+            placeholder={"What's on your mind?"}
+            multiline
+            numberOfLines={1}
+            // onChangeText={(text) => { setcontent(text) }}
+          />
+        </View>
+        {/* Upload Image Icon/ Button Post */}
+      </View>
+
       {/* List dữ liệu */}
-      {
-        post.map((item) => <NewsItemInPr key={item.id}
-          inputData={item} userInfo={userInfo}
-          onPress={(postId) => deletePost(postId)}
-        />)
-      }
+      <View style={{ backgroundColor: '#ccc' }}>
+        {
+          post.map((item) => <NewItems key={item.id}
+            inputData={item} navigation={navigation} userInfo={userInfo}
+            onPress={(postId) => deletePost(postId)}
+          />)
+        }
+      </View>
 
     </ScrollView>
   )

@@ -53,8 +53,11 @@ export default StyleSheet.create({
     },
     contentImgBox:{
         width: '100%',
-        height: 200,
+        height: 250,
         marginTop: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black'
     },
     contentImg:{
         width: '100%',

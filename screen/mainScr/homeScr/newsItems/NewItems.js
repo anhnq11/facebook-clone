@@ -34,6 +34,7 @@ const NewItems = (props) => {
     const [likeCount, setlikeCount] = useState(0)
     const [isLoading, setisLoading] = useState(false)
     const [action, setaction] = useState('')
+    const [navIndex, setnavIndex] = useState()
 
     // Fetch Likes post 
     const getLikes = async () => {
@@ -68,7 +69,7 @@ const NewItems = (props) => {
                 setisLike(true)
                 setlikeId(element.id)
             }
-            if(element.id == curLike){
+            if (element.id == curLike) {
                 setisLike(false)
             }
         });
@@ -183,15 +184,18 @@ const NewItems = (props) => {
         getLikes();
         console.log(likes); // Chạy lượt đầu không log ra dữ liệu
         setisLoading(false);
+        setnavIndex(props.navigation.getState().index);
     }, []);
 
     return (
         <View style={Style.container}>
             {/* User Info */}
             <TouchableWithoutFeedback onPress={() => {
-                console.log("User Info Click!!!");
-                setaction('SHOW_ACC')
-                setisModalShow(true)
+                if (navIndex !== 3) {
+                    console.log("User Info Click!!!");
+                    setaction('SHOW_ACC')
+                    setisModalShow(true)
+                }
             }}>
                 <View style={Style.userInfo} >
                     <View style={Style.userImgBox}><Image style={Style.userImg} source={{ uri: props.inputData.profile.img }} /></View>
@@ -230,14 +234,14 @@ const NewItems = (props) => {
                                 unLike(likeId)
                                 setisLike(false)
                                 setcurLike(likeId)
-                                }}>
+                            }}>
                                 <FontAwesome name='heart' style={[Style.reactIcon, { color: 'red' }]} />
                             </TouchableWithoutFeedback> :
-                                <TouchableWithoutFeedback onPress={() => { 
+                                <TouchableWithoutFeedback onPress={() => {
                                     addLike(props.inputData.id, props.userInfo.id)
                                     setisLike(true)
-                                    }}>
-                                        <FontAwesome name='heart-o' style={Style.reactIcon} />
+                                }}>
+                                    <FontAwesome name='heart-o' style={Style.reactIcon} />
                                 </TouchableWithoutFeedback>
                         }
                     </View>
@@ -287,7 +291,7 @@ const NewItems = (props) => {
                                     props.inputData.content != "" ? <Text style={Style.contentText}>{props.inputData.content}</Text> : <View></View>
                                 }
                                 {
-                                    props.inputData.img != "" ? <View style={Style.contentImgBox}><Image style={Style.contentImg} source={{ uri: props.inputData.img }} /></View> : <View></View>
+                                    props.inputData.img != "" ? <View style={Style.contentImgBox}><Image style={Style.contentImg} resizeMode='contain' source={{ uri: props.inputData.img }} /></View> : <View></View>
                                 }
                             </View>
                             <ScrollView style={Style.listCmt}>
@@ -316,7 +320,9 @@ const NewItems = (props) => {
                         </View> : action === 'SHOW_IMG' ?
                             // Modal show Image
                             <View style={Style.modalImgBox}>
-                                <Image style={{ width: deviceWidth, height: deviceHeight / 3 }} source={{ uri: props.inputData.img }} />
+                                <View style={{ width: deviceWidth, height: deviceHeight / 2 }}>
+                                    <Image style={{ width: '100%', height: '100%' }} resizeMode='contain' source={{ uri: props.inputData.img }} />
+                                </View>
                             </View> : action === 'SHOW_ACC' ?
                                 <View style={{ width: deviceWidth, height: deviceHeight, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text>Đây là profile của {props.inputData.profile.fullname}</Text>
