@@ -70,7 +70,7 @@ export default StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 3,
+        paddingVertical: 5,
     },
     btnBoxR:{
         width: '40%',
@@ -79,7 +79,7 @@ export default StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 3,
+        paddingVertical: 5,
         marginLeft: 10,
     },
     btnIcon:{
@@ -150,7 +150,8 @@ export default StyleSheet.create({
         borderTopWidth: 10,
         borderTopColor: '#ccc',
         padding: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     userImgBox2:{
         width: 40,
@@ -166,7 +167,7 @@ export default StyleSheet.create({
         borderRadius: 40
     },
     inputBox2:{
-        width: 300,
+        width: 280,
         borderWidth: 2,
         borderRadius: 10,
         borderColor: '#ccc',
@@ -174,6 +175,80 @@ export default StyleSheet.create({
         padding: 8,
     },
     inputText2:{
+        color: 'black',
+        fontWeight: '600',
+        fontSize: 18,
+    },
+    uploadImgBox:{
+        width: 40,
+        height: 40,
+        marginLeft: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    uploadImg:{
+        color: '#30CF59',
+        fontSize: 30,
+    },
+    modalHeader:{
+        flexDirection: 'row',
+        borderBottomWidth: 2,
+        borderBottomColor: '#ccc',
+        padding: 10,
+        alignItems: 'center'
+    },
+    iconBackBox:{
+        width: 30,
+        height: 30,
+        marginRight: 15,
+    },
+    iconBack:{
+        fontSize: 30,
+    },
+    uploadModalHeader:{
+        fontSize: 20,
+    },
+    mUserInfo:{
+        width: '90%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+    },
+    mUserImgBox:{
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+    },
+    mUserImg:{
+        width: '100%',
+        height: '100%',
+        borderRadius: 40
+    },
+    mUserNameBox:{
+        width: '70%',
+        marginLeft: 5,
+    },
+    mUserName:{
+        fontSize: 19,
+        color: 'black',
+        fontWeight: '500',
+    },
+    mUserDes:{
+        marginTop: -5,
+        color: '#696C87',
+        marginRight: 10,
+        fontSize: 15,
+        color: 'black',
+    },
+    mInputBox:{
+        maxWidth: '95%',
+        minHeight: 60,
+        borderRadius: 10,
+        marginHorizontal: 10,
+    },
+    mInputText:{
         color: 'black',
         fontWeight: '600',
         fontSize: 18,
