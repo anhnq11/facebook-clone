@@ -210,39 +210,6 @@ const Profile = ({ navigation }) => {
     }
   }
 
-  // Xóa post
-  const deletePost = (postId) => {
-    Alert.alert("Xác nhận", "Bạn chắc chắn muốn xóa bài viết?", [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {
-        text: 'Xóa', onPress: () => {
-          let url = URL + '/posts/' + postId
-
-          fetch(url, {
-            method: 'DELETE',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            }
-          })
-            .then((res) => {
-              if (res.status == 200) {
-                Alert.alert("Thông báo", "Xóa bài viết thành công!");
-                loadData();
-              }
-
-            })
-            .catch((ex) => {
-              console.log(ex);
-            });
-        },
-      }
-    ])
-  }
-
   return (
     <ScrollView
       refreshControl={
@@ -417,7 +384,7 @@ const Profile = ({ navigation }) => {
         {
           post.map((item) => <NewItems key={item.id}
             inputData={item} navigation={navigation} userInfo={userInfo}
-            onPress={(postId) => deletePost(postId)}
+            onPress={() => loadData()}
           />)
         }
       </View>

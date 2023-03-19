@@ -9,12 +9,13 @@ import {
     TextInput,
     Dimensions,
     ToastAndroid,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import { Dropdown } from 'react-native-element-dropdown';
+
 import Style from './NewItemsStyle'
 import URL from '../../../../UrlAPi'
 
@@ -35,6 +36,13 @@ const NewItems = (props) => {
     const [isLoading, setisLoading] = useState(false)
     const [action, setaction] = useState('')
     const [navIndex, setnavIndex] = useState()
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
+
+    const data = [
+        { label: 'Edit', value: '1' },
+        { label: 'Delete', value: '2' }
+    ];
 
     // Fetch Likes post 
     const getLikes = async () => {
@@ -169,6 +177,46 @@ const NewItems = (props) => {
         }
     }
 
+    // Sửa/ xóa post
+    const postAction = (value, postId) => {
+        if (value == 1) {
+            Alert.alert('Thông báo', 'Không thể chỉnh sửa bài viết!')
+            console.log('Edit post: ' + postId)
+        }
+        else {
+            // Xóa post
+            Alert.alert("Xác nhận", "Bạn chắc chắn muốn xóa bài viết?", [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Xóa', onPress: () => {
+                        let url = URL + '/posts/' + postId;
+
+                        fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                            .then((res) => {
+                                if (res.status == 200) {
+                                    Alert.alert("Thông báo", "Xóa bài viết thành công!");
+                                    loadData();
+                                }
+
+                            })
+                            .catch((ex) => {
+                                console.log(ex);
+                            });
+                    },
+                }
+            ]);
+        }
+    }
+
     React.useEffect(() => {
         const focusHandler = props.navigation.addListener('focus', () => {
             // loadData();
@@ -190,19 +238,52 @@ const NewItems = (props) => {
     return (
         <View style={Style.container}>
             {/* User Info */}
-            <TouchableWithoutFeedback onPress={() => {
-                if (navIndex !== 3) {
-                    console.log("User Info Click!!!");
-                    setaction('SHOW_ACC')
-                    setisModalShow(true)
-                }
-            }}>
-                <View style={Style.userInfo} >
-                    <View style={Style.userImgBox}><Image style={Style.userImg} source={{ uri: props.inputData.profile.img }} /></View>
-                    <View style={Style.userNameBox}>
-                        <Text style={Style.userName}>{props.inputData.profile.fullname}</Text>
-                        <View style={Style.DesBox}><Text style={Style.userDes}>@{props.inputData.profile.name}</Text></View>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    if (navIndex !== 3) {
+                        console.log("User Info Click!!!");
+                        setaction('SHOW_ACC')
+                        setisModalShow(true)
+                    }
+                }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={Style.userInfo} >
+                        <View style={Style.userImgBox}><Image style={Style.userImg} source={{ uri: props.inputData.profile.img }} /></View>
+                        <View style={Style.userNameBox}>
+                            <Text style={Style.userName}>{props.inputData.profile.fullname}</Text>
+                            <View style={Style.DesBox}><Text style={Style.userDes}>@{props.inputData.profile.name}</Text></View>
+                        </View>
                     </View>
+                    {/* Dropdown chức năng sửa/xóa bài viết */}
+                    {
+                        // Hiển thị Icon xóa/sửa với bài viết của tài khoản đang đăng nhập.
+                        (props.inputData.profileId !== props.userInfo.id) ? <View></View> :
+                            <View style={Style.dropdownContainer}>
+                                <Dropdown
+                                    style={(!isFocus) ? Style.dropdownClose : Style.dropdownOpen}
+                                    placeholderStyle={Style.placeholderStyle}
+                                    selectedTextStyle={Style.placeholderStyle}
+                                    containerStyle={Style.containerStyle}
+                                    itemTextStyle={Style.placeholderStyle}
+                                    itemContainerStyle={Style.itemContainerStyle}
+                                    iconStyle={Style.iconStyle}
+                                    showsVerticalScrollIndicator={false}
+                                    data={data}
+                                    maxHeight={120}
+                                    labelField="label"
+                                    valueField="value"
+                                    placeholder={!isFocus ? '' : ''}
+                                    value={value}
+                                    onFocus={() => setIsFocus(true)}
+                                    onBlur={() => setIsFocus(false)}
+                                    onChange={item => {
+                                        // setValue(item.value);
+                                        setIsFocus(false);
+                                        postAction(item.value, props.inputData.id);
+                                    }}
+                                />
+                            </View>
+                    }
                 </View>
             </TouchableWithoutFeedback>
 

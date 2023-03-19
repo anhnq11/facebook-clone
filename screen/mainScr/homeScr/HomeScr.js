@@ -10,8 +10,8 @@ import {
   Alert
 } from 'react-native'
 import { useState, useEffect } from 'react';
-import React from 'react'
-import Entypo from 'react-native-vector-icons/Entypo'
+import React from 'react';
+import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewItems from './newsItems/NewItems';
 import * as ImagePicker from 'expo-image-picker';
@@ -69,6 +69,7 @@ const HomeScr = ({ navigation }) => {
     getUserInfo();
     getPost();
     setisLoading(false);
+    console.log('Loading data!');
   }, []);
 
   // Lấy ảnh từ thư viện
@@ -136,7 +137,7 @@ const HomeScr = ({ navigation }) => {
         keyExtractor={(item) => { return item.id }}
         data={post}
         key={(item) => { return item.id }}
-        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo}/>}
+        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo} onPress={() => loadData()}/>}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={loadData} />
         }

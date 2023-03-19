@@ -10,9 +10,31 @@ export default StyleSheet.create({
         padding: 3,
     },
     userInfo:{
-        width: '90%',
+        width: '85%',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    dropdownContainer:{
+        position: 'absolute',
+        right: 5,
+        maxWidth: 200, 
+    },
+    dropdownClose:{
+        width: 20,
+    },
+    dropdownOpen:{
+        width: 200,
+    },
+    containerStyle:{
+        borderRadius: 10,
+        backgroundColor: '#ccc'
+    },
+    itemContainerStyle:{
+        borderRadius: 10,
+        backgroundColor: '#ccc',
+    },
+    placeholderStyle:{
+        fontSize: 15,
     },
     userImgBox:{
         width: 40,
@@ -57,7 +79,7 @@ export default StyleSheet.create({
         marginTop: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black'
+        backgroundColor: 'black',
     },
     contentImg:{
         width: '100%',
