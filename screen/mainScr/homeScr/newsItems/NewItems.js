@@ -226,14 +226,14 @@ const NewItems = (props) => {
     }, [props.navigation]);
 
     // Loadata
-    const loadData = React.useCallback(() => {
+    const loadData = () => {
         setisLoading(true);
         getCmts();
         getLikes();
         console.log(likes); // Chạy lượt đầu không log ra dữ liệu
         setisLoading(false);
         setnavIndex(props.navigation.getState().index);
-    }, []);
+    };
 
     return (
         <View style={Style.container}>
