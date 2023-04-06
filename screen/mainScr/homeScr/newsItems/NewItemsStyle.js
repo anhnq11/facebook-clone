@@ -10,7 +10,7 @@ export default StyleSheet.create({
         padding: 3,
     },
     userInfo:{
-        width: '85%',
+        width: '90%',
         flexDirection: 'row',
         alignItems: 'center',
     },

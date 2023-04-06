@@ -51,7 +51,7 @@ const NewItems = (props) => {
             const response = await fetch(url);
             const json = await response.json();
             setlikes(json)
-            setlikeCount(likes.length)
+            setlikeCount(json.length)
             getIsLike()
         } catch (error) {
             console.error(error);
@@ -73,9 +73,10 @@ const NewItems = (props) => {
 
     const getIsLike = () => {
         likes.forEach(element => {
+            // Nếu prfId là tài khoản hiện tại -> setisLike = true;
             if (element.profileId == props.userInfo.id) {
                 setisLike(true)
-                setlikeId(element.id)
+                // setlikeId(element.id) // Set LikeId để thực hiện UnLike
             }
             if (element.id == curLike) {
                 setisLike(false)
@@ -127,6 +128,8 @@ const NewItems = (props) => {
             .then((res) => {
                 if (res.status == 200) {
                     console.log('Hủy Like');
+                    setisLike(false)
+                    setcurLike(likeId) // Lấy Id của Like hiện tại. Check cho vòng lặp sau
                     loadData();
                 }
                 else {
@@ -230,7 +233,7 @@ const NewItems = (props) => {
         setisLoading(true);
         getCmts();
         getLikes();
-        console.log(likes); // Chạy lượt đầu không log ra dữ liệu
+        // console.log(likes); // Chạy lượt đầu không log ra dữ liệu
         setisLoading(false);
         setnavIndex(props.navigation.getState().index);
     };
@@ -313,8 +316,6 @@ const NewItems = (props) => {
                         {
                             isLike ? <TouchableWithoutFeedback onPress={() => {
                                 unLike(likeId)
-                                setisLike(false)
-                                setcurLike(likeId)
                             }}>
                                 <FontAwesome name='heart' style={[Style.reactIcon, { color: 'red' }]} />
                             </TouchableWithoutFeedback> :
@@ -405,8 +406,10 @@ const NewItems = (props) => {
                                     <Image style={{ width: '100%', height: '100%' }} resizeMode='contain' source={{ uri: props.inputData.img }} />
                                 </View>
                             </View> : action === 'SHOW_ACC' ?
+                                // Modal show profile
                                 <View style={{ width: deviceWidth, height: deviceHeight, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text>Đây là profile của {props.inputData.profile.fullname}</Text>
+                                    {/* Hiển thị chi tiết profile tại đây */}
                                 </View> : <View></View>
                 }
             </Modal>

@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from 'react';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewItems from './newsItems/NewItems';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,13 +24,12 @@ import URL from '../../../UrlAPi';
 const HomeScr = ({ navigation }) => {
 
   const [post, setpost] = useState([])
-  const [outPost, setoutPost] = useState([])
   const [userInfo, setuserInfo] = useState({})
   const [isLoading, setisLoading] = useState(false)
   const [isModalShow, setisModalShow] = useState(false)
 
-  const [content, setcontent] = useState()
-  const [img, setimg] = useState("")
+  const [content, setcontent] = useState('')
+  const [img, setimg] = useState('')
 
   // Lấy thông tin người dùng hiện tại trong LS
   const getUserInfo = async () => {
@@ -118,8 +118,8 @@ const HomeScr = ({ navigation }) => {
           Alert.alert("Thông báo!", "Đã tải bài viết lên!")
           setisModalShow(false)
           loadData()
-          setcontent(null)
-          setimg("")
+          setcontent('')
+          setimg('')
         }
         else {
           Alert.alert("Add Fail!")
@@ -132,18 +132,18 @@ const HomeScr = ({ navigation }) => {
   }
 
   return (
-    <View style={{backgroundColor: '#ccc'}}>
+    <View style={{ backgroundColor: '#ccc' }}>
       <FlatList
         keyExtractor={(item) => { return item.id }}
         data={post}
         key={(item) => { return item.id }}
-        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo} onPress={() => loadData()}/>}
+        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo} onPress={() => loadData()} />}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={loadData} />
         }
       />
 
-      {/* Kiểm tra quyền User */}
+      {/* Kiểm tra quyền tài khoản -> Cho phép đăng bài viết mới */}
       {
         userInfo.type == 0 ? <View></View> :
           <TouchableOpacity style={Style.addBtnBox} onPress={() => setisModalShow(true)}>
@@ -151,7 +151,7 @@ const HomeScr = ({ navigation }) => {
           </TouchableOpacity>
       }
 
-      {/* Modal Show */}
+      {/* Modal thêm bài viết mới */}
       <Modal
         animationType={'slide'}
         transparent={false}
@@ -160,54 +160,55 @@ const HomeScr = ({ navigation }) => {
           console.log('Modal has been closed.');
         }}>
         {/* Modal */}
-        <View style={Style.modalBox}>
-
-          <Text style={[Style.modalTitle, { marginTop: 0, textAlign: 'center' }]}>New Post</Text>
-          {/* Post Content */}
-          <View style={Style.inputBox}>
-            <TextInput
-              style={Style.inputText}
-              placeholder={userInfo.fullname + ", What's on your mind?"}
-              multiline
-              numberOfLines={1}
-              onChangeText={(text) => { setcontent(text) }}
-            />
-          </View>
-          {/* Post Img */}
-          <TouchableOpacity style={Style.modalImgBox} onPress={pickImage} >
-            {
-              img != "" ? <View style={{ width: 300, height: 150 }}><Image source={{ uri: img }} style={{ width: '100%', height: '100%' }} /></View> :
-                <View style={Style.btnAddImg}>
-                  <Entypo name='upload-to-cloud' style={{ color: 'black', fontSize: 40 }} />
-                  <Text style={Style.btnAddImgText}>Upload Image</Text>
-                </View>
-            }
-          </TouchableOpacity>
-
-          {/* Modal button */}
-          <View style={Style.modalBtnBox}>
-            <TouchableOpacity
-              style={Style.modalBtn}
+        <View>
+          {/* Modal Upload bài viết mới */}
+          <View style={Style.modalHeader}>
+            <TouchableOpacity style={Style.iconBackBox}
               onPress={() => {
                 setisModalShow(false)
-                setcontent(null)
-                setimg("")
-              }}>
-              <Text style={Style.modalBtnText}>Close</Text>
-            </TouchableOpacity>
+              }}
+            ><Ionicons style={Style.iconBack} name='arrow-back' /></TouchableOpacity>
+            <Text style={Style.uploadModalHeader}>Upload New Post</Text>
+            <View>
+              {
+                (content !== '' || img !== '') ? <TouchableOpacity onPress={uploadNewPost}>
+                  <Text style={[Style.uploadModalHeader, { marginLeft: '50%', color: '#30CF59' }]}>Post</Text>
+                </TouchableOpacity> :
+                  <Text style={[Style.uploadModalHeader, { marginLeft: '50%', color: '#ccc' }]}>Post</Text>
+              }
 
-            <TouchableOpacity
-              style={Style.modalBtn}
-              onPress={() => {
-                // if (content == '' && img == '') {
-                //   uploadNewPost();
-                // } else {
-                //   Alert.alert("Thông báo", "Nhập nội dung cho bài viết!")
-                // }
-                uploadNewPost();
-              }}>
-              <Text style={Style.modalBtnText}>Publish</Text>
-            </TouchableOpacity>
+            </View>
+          </View>
+          <View style={Style.mUserInfo}>
+            <View style={Style.mUserImgBox}><Image style={Style.mUserImg} source={{ uri: userInfo.img }} /></View>
+            <View style={Style.mUserNameBox}>
+              <Text style={Style.mUserName}>{userInfo.fullname}</Text>
+              <View style={Style.DesBox}><Text style={Style.mUserDes}>@{userInfo.name}</Text></View>
+            </View>
+          </View>
+          <View style={Style.mInputBox}>
+            <TextInput
+              style={Style.mInputText}
+              multiline
+              numberOfLines={1}
+              placeholder={"What's on your mind?"}
+              onChangeText={(text) => {
+                setcontent(text)
+              }}
+            />
+          </View>
+          {/* Icon upload image */}
+          <TouchableOpacity onPress={pickImage}>
+            {
+              img !== '' ? <View style={{ width: '100%', height: 450 }}>
+                <Image source={{ uri: img }} style={{ width: '100%', height: '100%' }} />
+              </View> : <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10 }}>
+                <Entypo style={Style.uploadImg} name='images' />
+                <Text style={[Style.mInputText, { marginLeft: 10 }]}>Upload an image</Text>
+              </View>
+            }
+          </TouchableOpacity>
+          <View>
           </View>
         </View>
       </Modal>

@@ -86,5 +86,71 @@ export default StyleSheet.create({
         fontWeight: '500',
         paddingVertical: 3,
     },
-    
+    modalHeader:{
+        flexDirection: 'row',
+        borderBottomWidth: 2,
+        borderBottomColor: '#ccc',
+        padding: 10,
+        alignItems: 'center'
+    },
+    iconBackBox:{
+        width: 30,
+        height: 30,
+        marginRight: 15,
+    },
+    iconBack:{
+        fontSize: 30,
+    },
+    uploadModalHeader:{
+        fontSize: 20,
+    },
+    mUserInfo:{
+        width: '90%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+    },
+    mUserImgBox:{
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+    },
+    mUserImg:{
+        width: '100%',
+        height: '100%',
+        borderRadius: 40
+    },
+    mUserNameBox:{
+        width: '70%',
+        marginLeft: 5,
+    },
+    mUserName:{
+        fontSize: 19,
+        color: 'black',
+        fontWeight: '500',
+    },
+    mUserDes:{
+        marginTop: -5,
+        color: '#696C87',
+        marginRight: 10,
+        fontSize: 15,
+        color: 'black',
+    },
+    mInputBox:{
+        maxWidth: '95%',
+        minHeight: 60,
+        borderRadius: 10,
+        marginHorizontal: 10,
+    },
+    mInputText:{
+        color: 'black',
+        fontWeight: '600',
+        fontSize: 18,
+    },
+    uploadImg:{
+        color: '#30CF59',
+        fontSize: 30,
+    },
 })

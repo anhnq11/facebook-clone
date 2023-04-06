@@ -80,6 +80,7 @@ const FriendItem = (props) => {
 
     // LoadData - Gọi lại dữ liệu
     const loadData = React.useCallback(async () => {
+        // console.log('Loading data!!!');
         getFollows(user.id)
         getFollowCount();
         setflid()
@@ -181,7 +182,14 @@ const FriendItem = (props) => {
                                     (isTrue) ?
                                         <View>
                                             <TouchableOpacity style={Style.followBtn} onPress={() => {
+                                                console.log(flid);
                                                 unFl(flid)
+                                                // Lỗi: 
+                                                // Khi Fl -> Ok
+                                                // UnFl -> Không lấy được Id Fl / Save code -> Unfl -> Ok :))
+                                                // Check: Fl -> List -> Fill Data
+
+                                                // Solution: Rerender Data khi gọi loaddata ở Items
                                             }}>
                                                 <Text style={Style.followText}>UnFollow</Text>
                                                 {/* <View style={Style.followImgBox}><Ionicons name='remove-circle-outline' style={Style.followImg} /></View> */}

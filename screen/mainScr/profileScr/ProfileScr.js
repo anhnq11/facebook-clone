@@ -110,7 +110,6 @@ const Profile = ({ navigation }) => {
       FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: 'base64' })
         .then((res) => {
           setimg("data:image/" + file_ext + ";base64," + res);
-          console.log(img);
         });
     }
   }

@@ -34,7 +34,7 @@ export default StyleSheet.create({
         fontSize: 30,
         fontWeight: '500',
         marginLeft: 10,
-        marginTop: 35,
+        marginTop: '15%',
     },
     flInfo:{
         marginTop: 45,
@@ -167,7 +167,7 @@ export default StyleSheet.create({
         borderRadius: 40
     },
     inputBox2:{
-        width: 280,
+        width: '75%',
         borderWidth: 2,
         borderRadius: 10,
         borderColor: '#ccc',
