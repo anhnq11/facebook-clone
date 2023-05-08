@@ -27,7 +27,7 @@ export default StyleSheet.create({
         borderRadius: 45,
     },
     userNameBox:{
-        width: '50%',
+        width: '53%',
         marginLeft: 5,
     },
     userName:{

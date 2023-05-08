@@ -210,14 +210,19 @@
       "flId": 3
     },
     {
-      "profileId": 1,
-      "flId": 2,
-      "id": 15
+      "profileId": 6,
+      "flId": 1,
+      "id": 12
+    },
+    {
+      "profileId": 8,
+      "flId": 1,
+      "id": 13
     },
     {
       "profileId": 2,
       "flId": 1,
-      "id": 17
+      "id": 14
     }
   ],
   "profiles": [
@@ -262,14 +267,6 @@
       "id": 6
     },
     {
-      "name": "hoanm",
-      "password": "123",
-      "fullname": "Nguyen Hoa",
-      "type": "0",
-      "img": "https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745",
-      "id": 7
-    },
-    {
       "name": "tuannv",
       "password": "123",
       "fullname": "Nguyen Tuan",
@@ -283,16 +280,6 @@
       "id": 3,
       "postId": 7,
       "profileId": 5
-    },
-    {
-      "id": 4,
-      "postId": 7,
-      "profileId": 7
-    },
-    {
-      "id": 5,
-      "postId": 6,
-      "profileId": 7
     },
     {
       "id": 6,
@@ -323,6 +310,26 @@
       "postId": 9,
       "profileId": 2,
       "id": 37
+    },
+    {
+      "postId": 7,
+      "profileId": 1,
+      "id": 38
+    },
+    {
+      "postId": 6,
+      "profileId": 1,
+      "id": 39
+    },
+    {
+      "postId": 4,
+      "profileId": 1,
+      "id": 40
+    },
+    {
+      "postId": 3,
+      "profileId": 1,
+      "id": 41
     }
   ]
 }

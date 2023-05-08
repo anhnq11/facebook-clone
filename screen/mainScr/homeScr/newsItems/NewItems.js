@@ -416,5 +416,4 @@ const NewItems = (props) => {
         </View>
     )
 }
-
 export default NewItems
