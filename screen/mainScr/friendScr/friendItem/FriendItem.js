@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Style from './FriendItemStyle'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
-import URL from '../../../../UrlAPi'
 
 const FriendItem = React.memo(props => {
 

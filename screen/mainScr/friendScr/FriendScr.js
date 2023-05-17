@@ -142,7 +142,6 @@ const FriendScr = ({ navigation }) => {
       }
     }
   }
-
   // Refresh
   React.useEffect(() => {
     getUserInfo();

@@ -22,17 +22,15 @@ import URL from '../../../../UrlAPi'
 let deviceWidth = Dimensions.get('window').width
 let deviceHeight = Dimensions.get('window').height
 
-const NewItems = (props) => {
+const NewItems = React.memo(props => {
 
+    var listLikes = []
     const [isModalShow, setisModalShow] = useState(false)
     const [comt, setcomt] = useState([])
     const [comment, setcomment] = useState('')
     const [cmtCount, setcmtCount] = useState(0)
-    const [isLike, setisLike] = useState(false)
-    const [likes, setlikes] = useState([])
-    const [likeId, setlikeId] = useState()
-    const [curLike, setcurLike] = useState()
-    const [likeCount, setlikeCount] = useState(0)
+    const [isLike, setIsLike] = useState(false)
+    const [itemId, setItemId] = useState();
     const [isLoading, setisLoading] = useState(false)
     const [action, setaction] = useState('')
     const [navIndex, setnavIndex] = useState()
@@ -43,20 +41,6 @@ const NewItems = (props) => {
         { label: 'Edit', value: '1' },
         { label: 'Delete', value: '2' }
     ];
-
-    // Fetch Likes post 
-    const getLikes = async () => {
-        let url = URL + '/likes?postId=' + props.inputData.id
-        try {
-            const response = await fetch(url);
-            const json = await response.json();
-            setlikes(json)
-            setlikeCount(json.length)
-            getIsLike()
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     // Fetch Comments bài viết - server
     const getCmts = async () => {
@@ -69,76 +53,6 @@ const NewItems = (props) => {
         } catch (error) {
             console.error(error);
         }
-    }
-
-    const getIsLike = () => {
-        likes.forEach(element => {
-            // Nếu prfId là tài khoản hiện tại -> setisLike = true;
-            if (element.profileId == props.userInfo.id) {
-                setisLike(true)
-                // setlikeId(element.id) // Set LikeId để thực hiện UnLike
-            }
-            if (element.id == curLike) {
-                setisLike(false)
-            }
-        });
-    }
-
-    // Add Like
-    const addLike = (postId, profileId) => {
-        let like = {
-            postId: postId,
-            profileId: profileId,
-        }
-
-        let urlPost = URL + '/likes'
-        fetch(urlPost, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(like)
-        })
-            .then((res) => {
-                if (res.status == 201) {
-                    console.log("Đã Like");
-                    loadData();
-                }
-                else {
-                    Alert.alert("Add Fail!")
-                    console.log(res.status);
-                }
-            })
-            .catch((ex) => {
-                console.log(ex);
-            });
-    }
-
-    // UnLike
-    const unLike = (likeId) => {
-        let url = URL + '/likes/' + likeId
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((res) => {
-                if (res.status == 200) {
-                    console.log('Hủy Like');
-                    setisLike(false)
-                    setcurLike(likeId) // Lấy Id của Like hiện tại. Check cho vòng lặp sau
-                    loadData();
-                }
-                else {
-                    console.log(res.status);
-                }
-            })
-            .catch((ex) => {
-                console.log(ex);
-            });
     }
 
     const addNewCmt = () => {
@@ -221,26 +135,31 @@ const NewItems = (props) => {
     }
 
     React.useEffect(() => {
-        const focusHandler = props.navigation.addListener('focus', () => {
-            // loadData();
-        });
         loadData();
-        return focusHandler;
-    }, [props.navigation]);
+    }, []);
 
     // Loadata
     const loadData = () => {
         setisLoading(true);
         getCmts();
-        getLikes();
-        // console.log(likes); // Chạy lượt đầu không log ra dữ liệu
+        listLikes = props.inputData.likes;
+        console.log(listLikes);
+        setItemId(props.inputData.id);
+        if (listLikes.length !== 0) {
+            for (const item of listLikes) {
+                if (item.profileId == props.userInfo.id) {
+                    setIsLike(true)
+                }
+            }
+        }
         setisLoading(false);
         setnavIndex(props.navigation.getState().index);
     };
 
     return (
         <View style={Style.container}>
-            {/* User Info */}
+            {/* Hiển thị Thông tin người dùng 
+            khi nhấn vào tên người dùng ở bài viết */}
             <TouchableWithoutFeedback
                 onPress={() => {
                     if (navIndex !== 3) {
@@ -309,25 +228,24 @@ const NewItems = (props) => {
 
             {/* React Icon */}
             <View style={Style.mReactBox}>
-                <TouchableOpacity style={Style.reactBox} onPress={() => {
-                    loadData()
-                }}>
+                <TouchableOpacity style={Style.reactBox}>
                     <View style={Style.iconBox}>
                         {
                             isLike ? <TouchableWithoutFeedback onPress={() => {
-                                unLike(likeId)
+                                props.onClick('1', itemId)
+                                setIsLike(false);
                             }}>
                                 <FontAwesome name='heart' style={[Style.reactIcon, { color: 'red' }]} />
                             </TouchableWithoutFeedback> :
                                 <TouchableWithoutFeedback onPress={() => {
-                                    addLike(props.inputData.id, props.userInfo.id)
-                                    setisLike(true)
+                                    props.onClick('2', itemId)
+                                    setIsLike(true)
                                 }}>
                                     <FontAwesome name='heart-o' style={Style.reactIcon} />
                                 </TouchableWithoutFeedback>
                         }
                     </View>
-                    <Text style={Style.reactText}>{likeCount}</Text>
+                    <Text style={Style.reactText}>{props.inputData.likes.length}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={Style.reactBox} onPress={() => {
                     setaction('SHOW_CMT') // Hành động xem comment bài viết
@@ -415,5 +333,5 @@ const NewItems = (props) => {
             </Modal>
         </View>
     )
-}
+})
 export default NewItems

@@ -31,12 +31,14 @@ const HomeScr = ({ navigation }) => {
   const [content, setcontent] = useState('')
   const [img, setimg] = useState('')
 
+  let postArrays = []
+
   // Lấy thông tin người dùng hiện tại trong LS
   const getUserInfo = async () => {
     try {
       const value = await AsyncStorage.getItem('loginInfo')
       if (value !== null) {
-        setuserInfo(JSON.parse(value));
+        getPost(JSON.parse(value))
       }
     } catch (e) {
       console.log(e);
@@ -44,32 +46,114 @@ const HomeScr = ({ navigation }) => {
   }
 
   // Fetch data hiển thị danh sách bài viết
-  const getPost = async () => {
+  const getPost = async (value) => {
     let url = URL + '/posts?_sort=id&_order=desc&_expand=profile'
+    setuserInfo(value)
     try {
       const response = await fetch(url);
       const json = await response.json();
-      setpost(json);
+      for (const item of json) {
+        let getLikeUrl = URL + '/likes?postId=' + item.id
+        try {
+          const response = await fetch(getLikeUrl);
+          const json = await response.json();
+          item.likes = json;
+          postArrays.push(item);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      setpost(postArrays);
+      postArrays = []
     } catch (error) {
       console.error(error);
     }
   }
 
+  const buttonClick = async (value, data) => {
+    switch (value) {
+      case '1': {
+        // Delete like post
+        let url = URL + '/likes?postId=' + data + '&profileId=' + userInfo.id;
+        let deleteObj;
+        try {
+          const response = await fetch(url);
+          const json = await response.json();
+          deleteObj = json;
+        }
+        catch (error) {
+          console.log(error);
+        }
+        let deleteId = deleteObj[0].id;
+        let deleteUrl = URL + '/likes/' + deleteId;
+        fetch(deleteUrl, {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              getUserInfo();
+            }
+            else {
+              console.log(res.status);
+            }
+          })
+          .catch((ex) => {
+            console.log(ex);
+          });
+      }
+        break;
+      case '2': {
+        // Add like post
+
+        let likePost = {
+          postId: data,
+          profileId: userInfo.id,
+        }
+
+        let urlPost = URL + '/likes'
+        fetch(urlPost, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(likePost)
+        })
+          .then((res) => {
+            if (res.status == 201) {
+              console.log("Đã Like");
+              loadData();
+            }
+            else {
+              Alert.alert("Add Fail!")
+              console.log(res.status);
+            }
+          })
+          .catch((ex) => {
+            console.log(ex);
+          });
+      }
+        break;
+
+      default:
+        break;
+    }
+  }
+
   // Refresh
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadData();
-    });
-    return unsubscribe;
-  }, [navigation]);
+    getUserInfo();
+  }, []);
 
   // Loadata
   const loadData = React.useCallback(() => {
     setisLoading(true);
     getUserInfo();
-    getPost();
     setisLoading(false);
-    console.log('Loading data!');
   }, []);
 
   // Lấy ảnh từ thư viện
@@ -137,7 +221,8 @@ const HomeScr = ({ navigation }) => {
         keyExtractor={(item) => { return item.id }}
         data={post}
         key={(item) => { return item.id }}
-        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation} userInfo={userInfo} onPress={() => loadData()} />}
+        renderItem={({ item }) => <NewItems inputData={item} navigation={navigation}
+          userInfo={userInfo} onClick={buttonClick} />}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={loadData} />
         }
@@ -159,7 +244,7 @@ const HomeScr = ({ navigation }) => {
         onRequestClose={() => {
           console.log('Modal has been closed.');
         }}>
-        {/* Modal */}
+        {/* Modal add new post */}
         <View>
           {/* Modal Upload bài viết mới */}
           <View style={Style.modalHeader}>
