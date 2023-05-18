@@ -39,13 +39,14 @@ const Profile = ({ navigation }) => {
   const [content, setcontent] = useState('')
   const [contentImg, setcontentImg] = useState('')
 
+  let postArrays = []
+
   // Lấy thông tin người dùng hiện tại trong LS, hiển thị lên màn hình
   const getUserInfo = async () => {
     try {
       const value = await AsyncStorage.getItem('loginInfo')
       if (value !== null) {
         getPost(JSON.parse(value));
-        getFollows(JSON.parse(value));
       }
     } catch (e) {
       console.log(e);
@@ -58,13 +59,99 @@ const Profile = ({ navigation }) => {
     setimg(value.img)
     setname(value.fullname)
     setuserInfo(value)
+    getFollows(value)
     try {
       const response = await fetch(url);
       const json = await response.json();
-      setpost(json);
-      setpostCount(json.length);
+      setpostCount(json.length)
+      for (const item of json) {
+        let getLikeUrl = URL + '/likes?postId=' + item.id
+        try {
+          const response = await fetch(getLikeUrl);
+          const json = await response.json();
+          item.likes = json;
+          postArrays.push(item);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      setpost(postArrays);
+      postArrays = []
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  const buttonClick = async (value, data) => {
+    switch (value) {
+      case '1': {
+        // Delete like post
+        let url = URL + '/likes?postId=' + data + '&profileId=' + userInfo.id;
+        let deleteObj;
+        try {
+          const response = await fetch(url);
+          const json = await response.json();
+          deleteObj = json;
+        }
+        catch (error) {
+          console.log(error);
+        }
+        let deleteId = deleteObj[0].id;
+        let deleteUrl = URL + '/likes/' + deleteId;
+        fetch(deleteUrl, {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              getUserInfo();
+            }
+            else {
+              console.log(res.status);
+            }
+          })
+          .catch((ex) => {
+            console.log(ex);
+          });
+      }
+        break;
+      case '2': {
+        // Add like post
+
+        let likePost = {
+          postId: data,
+          profileId: userInfo.id,
+        }
+
+        let urlPost = URL + '/likes'
+        fetch(urlPost, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(likePost)
+        })
+          .then((res) => {
+            if (res.status == 201) {
+              loadData();
+            }
+            else {
+              Alert.alert("Add Fail!")
+              console.log(res.status);
+            }
+          })
+          .catch((ex) => {
+            console.log(ex);
+          });
+      }
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -82,7 +169,7 @@ const Profile = ({ navigation }) => {
 
   // Refresh
   React.useEffect(() => {
-    loadData();
+    getUserInfo();
   }, []);
 
   // LoadData - Gọi lại dữ liệu
@@ -96,7 +183,7 @@ const Profile = ({ navigation }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
@@ -383,7 +470,7 @@ const Profile = ({ navigation }) => {
         {
           post.map((item) => <NewItems key={item.id}
             inputData={item} navigation={navigation} userInfo={userInfo}
-            onPress={() => loadData()}
+            onPress={() => loadData()} onClick={buttonClick}
           />)
         }
       </View>

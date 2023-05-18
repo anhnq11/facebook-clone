@@ -125,7 +125,6 @@ const HomeScr = ({ navigation }) => {
         })
           .then((res) => {
             if (res.status == 201) {
-              console.log("Đã Like");
               loadData();
             }
             else {
@@ -242,7 +241,6 @@ const HomeScr = ({ navigation }) => {
         transparent={false}
         visible={isModalShow}
         onRequestClose={() => {
-          console.log('Modal has been closed.');
         }}>
         {/* Modal add new post */}
         <View>

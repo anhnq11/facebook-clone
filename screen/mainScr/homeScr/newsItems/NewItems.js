@@ -97,6 +97,7 @@ const NewItems = React.memo(props => {
     // Sửa/ xóa post
     const postAction = (value, postId) => {
         if (value == 1) {
+            // Chỉnh sửa bài viết
             Alert.alert('Thông báo', 'Không thể chỉnh sửa bài viết!')
             console.log('Edit post: ' + postId)
         }
@@ -143,7 +144,6 @@ const NewItems = React.memo(props => {
         setisLoading(true);
         getCmts();
         listLikes = props.inputData.likes;
-        console.log(listLikes);
         setItemId(props.inputData.id);
         if (listLikes.length !== 0) {
             for (const item of listLikes) {
@@ -163,6 +163,7 @@ const NewItems = React.memo(props => {
             <TouchableWithoutFeedback
                 onPress={() => {
                     if (navIndex !== 3) {
+                        // Hiển thị thông tin tài khoản
                         console.log("User Info Click!!!");
                         setaction('SHOW_ACC')
                         setisModalShow(true)
